@@ -1,5 +1,9 @@
+# env
+.env
+api/serviceAccount.json
+
 # dependencies
-/node_modules
+*/node_modules
 
 # production
 /build
