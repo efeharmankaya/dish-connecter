@@ -104,15 +104,17 @@ def login():
 
 
 @app.route('/recipe/<id>', methods=['GET'])
-def get_recipe(id: int):
+def get_recipe(id: int, output=None):
     '''
         get recipe by id
     '''
-    print(f"fetching recipe id: {id}")
     APP_ID = os.getenv("RECIPE_APP_ID")
     APP_KEY = os.getenv("RECIPE_APP_KEY")
     request_url = f'https://api.edamam.com/api/recipes/v2/{id}?type=public&app_id={APP_ID}&app_key={APP_KEY}'
     resp = requests.get(request_url).json()
+
+    if (output):
+        return resp
 
     recipe = None
 
@@ -123,6 +125,28 @@ def get_recipe(id: int):
 
     return create_response(True, data=recipe)
 
+
+@app.route('/get-recipes', methods=['POST'])
+def get_recipes():
+    '''
+        get multiple recipes
+        
+        request: {
+            ids: string[]
+        }
+    '''
+    req = request.get_json()
+    ids = req.get("ids")
+
+    recipes = []
+    for id in ids:
+        resp = get_recipe(id, True)
+        try:
+            recipes.append(resp.get("recipe"))
+        except Exception:
+            continue
+
+    return create_response(True, data=recipes)
 
 if __name__ == '__main__':
     app.run(debug=True)
