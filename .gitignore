@@ -1,7 +1,3 @@
-# env
-.env
-api/serviceAccount.json
-
 # dependencies
 */node_modules
 
