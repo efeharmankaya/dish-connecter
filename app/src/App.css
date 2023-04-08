@@ -1,3 +1,34 @@
 .hide {
     visibility: hidden;
 }
+
+/* TODO responsive height/width calculation */
+.app-container {
+    position: absolute;
+    overflow: auto;
+    display: flex;
+    width: 100%;
+    height: calc(100% - 50px);
+}
+
+.top-nav-container {
+    display: flex;
+    background-color: grey;
+    width: 100%;
+    height: 50px;
+    align-items: center;
+}
+
+.side-nav-container {
+    display: flex;
+    background-color: red;
+    width: 15%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.workspace-container {
+    width: 85%;
+}

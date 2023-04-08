@@ -7,6 +7,7 @@ import { getAuth } from "firebase/auth";
 import { useSelector } from "react-redux";
 import { loggedInSelector } from "./redux/auth/auth.selector";
 import { useAuth } from "./components/auth/auth.hooks";
+import { Workspace } from "./components/workspace/Workspace.component";
 
 function App() {
     const firebaseConfig = {
@@ -19,8 +20,6 @@ function App() {
         measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
     };
 
-    console.log(firebaseConfig);
-
     initializeApp(firebaseConfig);
 
     const loggedIn = useSelector(loggedInSelector);
@@ -32,9 +31,7 @@ function App() {
         if (flag) {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             flag = false;
-            console.log("render");
             auth.onAuthStateChanged((user) => {
-                console.log("user: ", user);
                 if (!!user === loggedIn) return; // auth and store is synced
                 if (!!user && !loggedIn)
                     // auth signed in / store not signed in
@@ -49,8 +46,10 @@ function App() {
     return (
         <div className="App">
             <TopNav />
-            <SideNav />
-            <h1>Dish Connecter</h1>
+            <div className="app-container">
+                <SideNav />
+                <Workspace />
+            </div>
         </div>
     );
 }

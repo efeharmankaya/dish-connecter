@@ -1,8 +1,10 @@
+import os
 from flask import Flask, request, jsonify
 from os.path import join, dirname
 from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, firestore
+import requests
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -26,14 +28,24 @@ def index():
     return create_response(True, "Success from api")
 
 
+CUISINES = ['American', 'Asian', 'British', 'Caribbean', 'Central Europe', 'Chinese', 'Eastern Europe', 'French', 'Indian',
+            'Italian', 'Japanese', 'Kosher', 'Mediterranean', 'Mexican', 'Middle Eastern', 'Nordic', 'South American', 'South East Asian']
+
+
+@app.route('/TEST-recipe', methods=['GET'])
 def get_random_recipe():
+    from random import choice
     '''
     https://api.edamam.com/api/recipes/v2
-    app id: f0bb7eba
-    app key: 5cdad02e865b28f2a4f39f100878b070	
     '''
+    APP_ID = os.getenv("RECIPE_APP_ID")
+    APP_KEY = os.getenv("RECIPE_APP_KEY")
+    request_url = f'https://api.edamam.com/api/recipes/v2?type=public&app_id={APP_ID}&app_key={APP_KEY}&random=true&cuisineType={choice(CUISINES)}'
 
-    return None
+    req = requests.get(request_url)
+    resp = req.json()
+
+    return create_response(True, data=resp)
 
 
 @app.route('/login', methods=['POST'])

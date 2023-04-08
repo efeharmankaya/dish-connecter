@@ -14,12 +14,13 @@ export interface User {
     creationTime: string;
     lastSignInTime: string;
 
-    recipes: Recipe[];
-    bookmarks: Recipe[];
+    // TODO Recipe[] or string[] (storing the ids)
+    //* Note: image and link tokens expire 
+    recipes: string[];
+    bookmarks: string[];
 }
 
 // TODO move out
-
 export type Cuisine = 'American' | 'Asian' | 'British' | 'Caribbean' | 'Central Europe' | 'Chinese' | 'Eastern Europe' | 'French' | 'Indian' | 'Italian' | 'Japanese' | 'Kosher' | 'Mediterranean' | 'Mexican' | 'Middle Eastern' | 'Nordic' | 'South American' | 'South East Asian';
 export type Meal = 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'teatime'
 export interface Recipe {
