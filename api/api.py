@@ -148,5 +148,35 @@ def get_recipes():
 
     return create_response(True, data=recipes)
 
+
+@app.route("/search", methods=['POST'])
+@app.route("/search/<query>", methods=['GET'])
+def search(query=None):
+    # TODO paginate needed? (if not -> max 20 results)
+    '''
+    query recipe search for recipe results
+    
+    request: {
+        query: string
+    }
+    '''
+    if not query:
+        req = request.get_json()
+        query = req.get("query")
+
+    APP_ID = os.getenv("RECIPE_APP_ID")
+    APP_KEY = os.getenv("RECIPE_APP_KEY")
+    request_url = f'https://api.edamam.com/api/recipes/v2?type=public&app_id={APP_ID}&app_key={APP_KEY}&q={query}'
+
+    resp = requests.get(request_url).json()
+    recipes = []
+    try:
+        hits = resp.get("hits")
+        recipes = [hit.get('recipe') for hit in hits]
+    except Exception:
+        return create_response(False, data=resp)
+
+    return create_response(True, data=recipes)
+
 if __name__ == '__main__':
     app.run(debug=True)

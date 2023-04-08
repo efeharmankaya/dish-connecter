@@ -12,6 +12,7 @@
 }
 
 .top-nav-container {
+    position: sticky;
     display: flex;
     background-color: grey;
     width: 100%;
@@ -20,6 +21,7 @@
 }
 
 .side-nav-container {
+    position: static;
     display: flex;
     background-color: red;
     width: 15%;

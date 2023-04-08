@@ -1,0 +1,37 @@
+.recipe-row-container {
+    cursor: pointer;
+    padding: 30px;
+    margin: 20px;
+    border-radius: 25px;
+    transition: all 0.35s ease-in-out;
+}
+
+.recipe-row-container:hover {
+    background-color: rgb(181, 218, 189);
+    transition: all 0.35s ease-in-out;
+}
+
+.recipe-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.recipe-row-container .label-container {
+}
+
+.recipe-row-container .image-container {
+    max-height: 100px;
+    border-radius: 25px;
+}
+
+.recipe-row-container .cuisine-type-container {
+}
+
+.recipe-row-container .dish-type-container {
+}
+
+.recipe-row-container .nutrition-container {
+}
+
