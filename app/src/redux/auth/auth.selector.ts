@@ -10,3 +10,9 @@ export const loggedInSelector = createSelector(
     authSelector,
     (auth) => auth.loggedIn
 )
+
+
+export const bookmarksSelector = createSelector(
+    userSelector,
+    (user) => user?.bookmarks ?? []
+)

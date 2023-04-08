@@ -33,7 +33,7 @@ CUISINES = ['American', 'Asian', 'British', 'Caribbean', 'Central Europe', 'Chin
 
 
 @app.route('/TEST-recipe', methods=['GET'])
-def get_random_recipe():
+def get_random_recipes(output=None):
     from random import choice
     '''
     https://api.edamam.com/api/recipes/v2
@@ -44,6 +44,9 @@ def get_random_recipe():
 
     req = requests.get(request_url)
     resp = req.json()
+
+    if output:
+        return resp
 
     return create_response(True, data=resp)
 
@@ -62,10 +65,25 @@ def login():
     user_doc = user_ref.get()
     is_returning_user = user_doc.exists
 
+    # !temp add 5 random bookmarks for testing
+    testing_bookmarks = []
+    if is_returning_user:
+        try:
+            recipes_resp = get_random_recipes(True)
+            hits = recipes_resp.get('hits')[:5]
+            recipe_ids = [hit.get('recipe').get("uri") for hit in hits]
+            testing_bookmarks = [
+                uri[uri.index("recipe_"):] for uri in recipe_ids]
+        except Exception as e:
+            print(e)
+    # !temp add 5 random bookmarks for testing
+
     if is_returning_user:
         user_ref.update({
             u'photoURL': req.get('photoURL'),
             u'lastSignInTime': req.get('lastSignInTime'),
+            u'bookmarks': testing_bookmarks
+
         })
     else:  # new user document
         user_ref.set({
@@ -91,7 +109,19 @@ def get_recipe(id: int):
         get recipe by id
     '''
     print(f"fetching recipe id: {id}")
-    return create_response(True)
+    APP_ID = os.getenv("RECIPE_APP_ID")
+    APP_KEY = os.getenv("RECIPE_APP_KEY")
+    request_url = f'https://api.edamam.com/api/recipes/v2/{id}?type=public&app_id={APP_ID}&app_key={APP_KEY}'
+    resp = requests.get(request_url).json()
+
+    recipe = None
+
+    try:
+        recipe = resp.get("recipe")
+    except Exception:
+        return create_response(False, data=resp)
+
+    return create_response(True, data=recipe)
 
 
 if __name__ == '__main__':
