@@ -23,9 +23,9 @@ export const RecipeSearch = () => {
             <button onClick={() => handleSubmit()}>Search</button>
             {!!results.length && (
                 <div className="results-container">
-                    {results.map((recipe: any, index) => {
-                        return <RecipeRow key={index} {...recipe} />;
-                    })}
+                    {results.map((recipe: any, index) => (
+                        <RecipeRow key={index} {...recipe} />
+                    ))}
                 </div>
             )}
         </div>
