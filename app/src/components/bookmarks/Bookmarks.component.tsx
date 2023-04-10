@@ -1,14 +1,10 @@
-import React from "react";
+
 import {useState} from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { bookmarksSelector, loggedInSelector } from "../../redux/auth/auth.selector";
 import { RecipeRow } from "../recipeRow/RecipeRow.component";
 
-
-function Bookmark(props : String) {
-
-}
 
 export const Bookmarks = () => {
  const loggedIn = useSelector(loggedInSelector)

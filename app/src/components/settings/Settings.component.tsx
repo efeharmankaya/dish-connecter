@@ -1,22 +1,20 @@
 import { Person } from "@mui/icons-material";
-import { Icon } from "@mui/material";
+import HelpIcon from '@mui/icons-material/Help';
+import "./settings.css";
+import { Link } from "react-router-dom";
 
 export const Settings = () => {
     return (
-        <div className="settings-container">
-            <h1>Settings</h1>
-            <Icon>
-                <Person />
-            </Icon>
-
-            <img
-                src="/person symbol.png"
-                alt="Failed to load person symbol"
-            ></img>
-            <img
-                src="QuestionMark.png"
-                alt="Failed to load Question Mark"
-            ></img>
-        </div>
+        <div><h1>Settings</h1>
+        <div className="larger-container">
+            
+            
+        <Link style={{color: "black"}} to="/"><div className="settings-container"><Person sx={{ fontSize: 80 }} />
+               <h2>Account Settings</h2></div> </Link>
+               <Link style={{color: "black"}} to="/aboutUs"><div className="settings-container"> <HelpIcon sx={{ fontSize: 80, clearfix: "left", float: "left"}}/>
+               <h2>About Us</h2>
+               </div></Link> 
+            
+        </div></div>
     );
 };

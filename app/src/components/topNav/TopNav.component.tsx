@@ -6,12 +6,12 @@ import {
     signInWithPopup,
 } from "firebase/auth";
 import { useAuth } from "../auth/auth.hooks";
-import { useNavigate } from "react-router-dom";
+
 
 export const TopNav = () => {
     const auth = getAuth();
     const { handleSignOut } = useAuth();
-    const navigate = useNavigate();
+    
     const loginWithOAuth = useCallback(
         (provider: AuthProvider) =>
             signInWithPopup(auth, provider)
@@ -24,7 +24,8 @@ export const TopNav = () => {
 
     return (
         <div className="top-nav-container">
-            <button onClick={() => navigate("/")}>Dish Connecter</button>
+            <a className="navbar-brand" href="/"><h2 id = "navbar_title">Dish Connecter</h2></a>
+           
             {auth.currentUser ? (
                 <button onClick={() => handleSignOut()}>Sign Out</button>
             ) : (

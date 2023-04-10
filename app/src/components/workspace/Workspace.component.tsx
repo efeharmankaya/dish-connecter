@@ -4,6 +4,7 @@ import { Home } from "../home/Home.component";
 import { Recipe } from "../recipe/Recipe.component";
 import { RecipeSearch } from "../recipe/RecipeSearch.component";
 import { Settings } from "../settings/Settings.component";
+import { AboutUs } from "../settings/AboutUs.component";
 
 export const Workspace = () => {
     return (
@@ -14,6 +15,7 @@ export const Workspace = () => {
                 <Route path={"/recipe/:id"} Component={Recipe} />
                 <Route path={"/bookmarks"} Component={Bookmarks} />
                 <Route path={"/settings"} Component={Settings} />
+                <Route path={"/aboutUs"} Component={AboutUs}/>
             </Routes>
         </div>
     );

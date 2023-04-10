@@ -1,0 +1,12 @@
+.about-main-container{text-align: center;
+display: flex;
+flex-direction: column;
+  justify-content: space-between;
+  height: 100px;
+  margin-left: 50px;
+  margin-right: 50px;
+;}
+
+.about-sub-container {
+    text-align: center;
+}
