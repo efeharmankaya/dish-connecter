@@ -104,10 +104,18 @@ def login():
 
 
 @app.route('/recipe/<id>', methods=['GET'])
-def get_recipe(id: int, output=None):
+def get_recipe(id: str, output=None):
     '''
         get recipe by id
     '''
+
+    if id.startswith('custom'):
+        recipe = db.collection(u'custom_recipes').document(id).get()
+        if recipe.exists:
+            return recipe
+        return create_response(False, message="Invalid recipe id.")
+
+
     APP_ID = os.getenv("RECIPE_APP_ID")
     APP_KEY = os.getenv("RECIPE_APP_KEY")
     request_url = f'https://api.edamam.com/api/recipes/v2/{id}?type=public&app_id={APP_ID}&app_key={APP_KEY}'
@@ -177,6 +185,87 @@ def search(query=None):
         return create_response(False, data=resp)
 
     return create_response(True, data=recipes)
+
+
+@app.route('/recipe-manager/create', methods=['POST'])
+def recipe_manager_create():
+    '''
+    create a custom recipe for the current user
+    
+    request {
+        uid: string,
+        (RecipeRow)
+        label,
+        image,
+        calories,
+        cuisineType,
+        dishType,
+        // TODO recipe props => Recipe page (in progress)
+        directions: string[],
+        ingredients: string[]
+        [...]
+    }
+    '''
+    req = request.get_json()
+
+    recipe_ref = db.collection(u'custom_recipes').document()
+    recipe_ref.set({
+        'uid': req.get('uid'),
+        'uri': f'custom_{recipe_ref.id}',
+        'label': req.get('label'),
+        'image': req.get('image'),
+        'calories': req.get('calories'),
+        'cuisineType': req.get('cuisineType'),
+        'dishType': req.get('dishType'),
+        'directions': req.get('directions'),
+        'ingredients': req.get('ingredients')
+    })
+
+    recipe = recipe_ref.get().to_dict()
+
+    return create_response(True, data=recipe)
+
+
+@app.route('/recipe-manager/delete', methods=['POST'])
+def recipe_manager_delete():
+    '''
+        delete a given custom recipe
+        
+        request {
+            uid: string, (owner: safety in deletion)
+            recipe_id: string
+        }
+    '''
+    req = request.get_json()
+
+    recipe_id = req.get('recipe_id')
+    recipe_ref = db.collection(u'custom_recipes').document(recipe_id)
+
+    recipe_doc = recipe_ref.get()
+    if not recipe_doc.exists:
+        return create_response(False, message="Invalid recipe id.")
+
+    recipe = recipe_doc.to_dict()
+    if recipe.get('uid') != req.get('uid'):
+        return create_response(False, message="Invalid user id.")
+
+    recipe_ref.delete()
+    return create_response(True, message=f"Deleted recipe: {recipe_id}")
+
+
+@app.route('/recipe-manager/list/<uid>', methods=['GET'])
+def recipe_manager_list(uid):
+    '''
+    lists user's custom recipes
+    '''
+    user_recipes_ref = db.collection(
+        u'custom_recipes').where(u'uid', u'==', uid)
+    user_recipes_docs = user_recipes_ref.stream()
+
+    user_recipes = [recipe.to_dict() for recipe in user_recipes_docs]
+
+    return create_response(True, data=user_recipes)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
