@@ -1,0 +1,23 @@
+h1{
+    text-align: center;
+    }
+
+    .account-container{
+        cursor: pointer;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 25px;
+        transition: all 0.35s ease-in-out;
+        text-align: center;
+       width: 575px;
+        display: flex;
+    }
+    
+    .account-container:hover {
+        background-color: rgb(181, 218, 189);
+        transition: all 0.35s ease-in-out;
+    }
+    
+    .larger-container{
+        display: flex;
+    }
