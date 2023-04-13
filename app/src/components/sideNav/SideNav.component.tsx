@@ -1,15 +1,28 @@
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { loggedInSelector } from "../../redux/auth/auth.selector";
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import { Link } from "react-router-dom";
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import { SettingsApplications } from "@mui/icons-material";
 
 export const SideNav = () => {
     const loggedIn = useSelector(loggedInSelector);
-    const navigate = useNavigate();
+    
     return (
         <div className={`side-nav-container ${!loggedIn ? "hide" : ""}`}>
-            <button onClick={() => navigate("/recipe")}>Find Recipes</button>
-            <button onClick={() => navigate("/bookmarks")}>Bookmarks</button>
-            <button onClick={() => navigate("/settings")}>Settings</button>
+            
+            <Link style={{color: "black"}} to="/recipe">  <ManageSearchIcon sx={{ fontSize: 60, marginTop: "20px", marginBottom: "5px"}} />
+            </Link>
+            
+            <Link style={{color: "black"}} to="/recipe"> <h4>Search Recipes</h4></Link>
+
+            <Link style={{color: "black"}} to="/bookmarks"> <BookmarksIcon sx={{ fontSize: 60, marginTop: "20px", marginBottom: "5px"}}/>
+            </Link>
+            <Link style={{color: "black"}} to="/bookmarks"><h4>Bookmarks</h4></Link>
+
+           <Link style={{color: "black"}} to="/settings">  <SettingsApplications sx={{ fontSize: 60, marginTop: "20px", marginBottom: "5px"}}/>
+           </Link>
+           <Link style={{color: "black"}} to="/settings"><h4>Settings</h4></Link>
         </div>
     );
 };
