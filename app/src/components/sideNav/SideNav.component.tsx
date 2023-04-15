@@ -4,6 +4,7 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import { Link } from "react-router-dom";
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { SettingsApplications } from "@mui/icons-material";
+import { Person } from "@mui/icons-material";
 
 export const SideNav = () => {
     const loggedIn = useSelector(loggedInSelector);
@@ -15,6 +16,10 @@ export const SideNav = () => {
             </Link>
             
             <Link style={{color: "black"}} to="/recipe"> <h4>Search Recipes</h4></Link>
+
+            <Link style={{color: "black"}} to="/profile">  <Person sx={{ fontSize: 60, marginTop: "20px", marginBottom: "5px"}} />
+            </Link>
+            <Link style={{color: "black"}} to="/profile"> <h4>Account</h4></Link> 
 
             <Link style={{color: "black"}} to="/bookmarks"> <BookmarksIcon sx={{ fontSize: 60, marginTop: "20px", marginBottom: "5px"}}/>
             </Link>
