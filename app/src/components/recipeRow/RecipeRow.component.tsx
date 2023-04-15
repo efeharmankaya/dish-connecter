@@ -18,12 +18,16 @@ export const RecipeRow = (recipe: any) => {
         dishType: dishTypes,
     } = recipe;
 
-    const id = uri.substring(uri.indexOf("recipe_")) ?? "";
 
     const navigate = useNavigate();
 
     const cuisineType = cuisineTypes[0] ?? undefined;
     const dishType = dishTypes[0] ?? undefined;
+
+    if (!uri) return null;
+
+    const id = uri.substring(uri.indexOf("recipe_")) ?? uri;
+
 
     // TODO string formatting INTL
     return (
