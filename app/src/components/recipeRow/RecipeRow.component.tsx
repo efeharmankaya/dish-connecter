@@ -26,7 +26,7 @@ export const RecipeRow = (recipe: any) => {
 
     if (!uri) return null;
 
-    const id = uri.substring(uri.indexOf("recipe_")) ?? uri;
+    const id = uri.substring(uri.indexOf("_") + 1) ?? uri;
 
 
     // TODO string formatting INTL
