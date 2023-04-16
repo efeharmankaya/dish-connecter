@@ -7,6 +7,8 @@ import { RecipeSearch } from "../recipe/RecipeSearch.component";
 import { AboutUs } from "../settings/AboutUs.component";
 import { Account } from "../settings/Account.component";
 import { Profile } from "../profile/Profile.component";
+import { ChangeName } from "../changeName/ChangeName.component";
+import { ChangeImage } from "../changeImage/ChangeImage.component";
 
 export const Workspace = () => {
     return (
@@ -19,6 +21,8 @@ export const Workspace = () => {
                 <Route path={"/aboutUs"} Component={AboutUs}/>
                 <Route path={"/settings"} Component={Account}/>
                 <Route path={"/profile"} Component={Profile}/>
+                <Route path={"/changeName"} Component={ChangeName}/>
+                <Route path={"/changeImage"} Component={ChangeImage}/>
             </Routes>
         </div>
     );

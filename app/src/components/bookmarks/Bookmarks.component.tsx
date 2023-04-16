@@ -29,7 +29,7 @@ useEffect(() => {
             console.error("/login response error: ", data);
         }
     })
-}, [loggedIn])
+}, [loggedIn, bookmarks])
 
    
 

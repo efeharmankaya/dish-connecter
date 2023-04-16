@@ -6,34 +6,6 @@ export const Profile = () => {
     const auth = getAuth()
 
     
-    
-
-   /* const [user, setUser] = useState()
-
-    useEffect(() => {
-        if(!loggedIn){return}
-        fetch('/profile', {
-        method: 'POST',
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({ids : thisUser})
-    })
-        .then((resp) => resp.json())
-        .then((data) => {
-            console.log("/get-recipes: ", data);
-            if (data.success) {
-                setUser(data.data)
-               
-            } else {
-                console.error("/login response error: ", data);
-            }
-        })
-    }, [loggedIn, thisUser])
-    
-    
-    <img src={auth.currentUser?.photoURL} alt="You have no photo" ></img>
-    
-    */
-    
     return(<div >
 <h1>Profile</h1>
 <br></br>

@@ -1,0 +1,23 @@
+.name-container{
+    margin-left: 100px;
+}
+input[type="text"], select{
+    padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  text-align: center;
+  width: 239px
+}
+form{border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+width:20%}
+
+input[type="submit"], select{padding: 10px;
+    margin: 5px;
+    border-radius: 25px;
+    border-color: black;
+    border-width: 3px;}
