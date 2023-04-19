@@ -6,13 +6,12 @@ export const userSelector = createSelector(
     (auth) => auth.user
 )
 
+export const bookmarksIdSelector = createSelector(
+    userSelector,
+    (user) => user?.bookmarks ?? []
+)
+
 export const loggedInSelector = createSelector(
     authSelector,
     (auth) => auth.loggedIn
-)
-
-
-export const bookmarksSelector = createSelector(
-    userSelector,
-    (user) => user?.bookmarks ?? []
 )
