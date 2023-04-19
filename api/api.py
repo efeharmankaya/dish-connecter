@@ -84,6 +84,44 @@ def set_photo_url():
     return create_response(True, data=user_doc)
 
 
+@app.route('/toggle-bookmark', methods=['POST'])
+def toggle_bookmark():
+    '''
+    add user bookmark
+    
+    request {
+        uid: string
+        id: string
+        add: boolean
+            # True : add
+            # False : remove
+    }
+    '''
+    req = request.get_json()
+    uid = req.get("uid")
+    if not uid:
+        return create_response(False, message="uid required in POST body")
+
+    user_ref = db.collection(u'users').document(uid)
+    user_doc = user_ref.get()
+    user = user_doc.to_dict()
+
+    new_bookmarks = user['bookmarks']
+
+    if req.get('add'):
+        new_bookmarks.append(req.get('id'))
+    else:
+        new_bookmarks = [
+            item for item in new_bookmarks if item != req.get('id')]
+
+    user_ref.update({
+        u'bookmarks': new_bookmarks
+    })
+
+    user_doc = user_ref.get().to_dict()
+    return create_response(True, data={'user': user_doc})
+
+
 @app.route('/TEST-recipe', methods=['GET'])
 def get_random_recipes(output=None):
     from random import choice
@@ -125,7 +163,7 @@ def login():
             hits = recipes_resp.get('hits')[:2]
             recipe_ids = [hit.get('recipe').get("uri") for hit in hits]
             testing_bookmarks = [
-                uri[uri.index("recipe_"):] for uri in recipe_ids]
+                uri[uri.index("recipe_")+7:] for uri in recipe_ids]
         except Exception as e:
             print(e)
     # !temp add 5 random bookmarks for testing

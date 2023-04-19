@@ -2,6 +2,18 @@
     visibility: hidden;
 }
 
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.MuiChip-root {
+    text-transform: capitalize;
+    margin: 5px;
+    background-color: #293f5617 !important;
+}
+
 /* TODO responsive height/width calculation */
 .app-container {
     position: absolute;
@@ -37,13 +49,7 @@
     align-items: center;
     justify-content: flex-start;
 }
-button{
-padding: 10px;
-margin: 5px;
-border-radius: 25px;
-border-color: black;
-border-width: 3px;
-}
+
 .workspace-container {
     width: 85%;
 }

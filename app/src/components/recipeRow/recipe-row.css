@@ -1,17 +1,26 @@
+.label { 
+    text-transform: capitalize;
+}
+
+.bookmark-button {
+    float: right;
+}
+
 .recipe-row-container {
-    cursor: pointer;
     padding: 30px;
     margin: 20px;
+    background-color: #fc844c60;
     border-radius: 25px;
     transition: all 0.35s ease-in-out;
 }
 
 .recipe-row-container:hover {
-    background-color: rgb(181, 218, 189);
+    background-color: #fc844c;
     transition: all 0.35s ease-in-out;
 }
 
 .recipe-row {
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
 }
