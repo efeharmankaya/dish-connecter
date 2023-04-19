@@ -32,6 +32,58 @@ CUISINES = ['American', 'Asian', 'British', 'Caribbean', 'Central Europe', 'Chin
             'Italian', 'Japanese', 'Kosher', 'Mediterranean', 'Mexican', 'Middle Eastern', 'Nordic', 'South American', 'South East Asian']
 
 
+@app.route("/set-display-name", methods=['POST'])
+def set_display_name():
+    '''
+    set user display name
+    
+    request {
+        uid: string
+        displayName: string
+    }
+    '''
+    req = request.get_json()
+
+    uid = req.get('uid')
+    if not uid:
+        return create_response(False, message="uid required in POST body")
+    user_ref = db.collection(u'users').document(uid)
+
+    user_ref.update({
+        u'displayName': req.get('displayName')
+    })
+
+    user_doc = user_ref.get().to_dict()
+
+    return create_response(True, data=user_doc)
+
+
+@app.route("/set-photo-url", methods=['POST'])
+def set_photo_url():
+    '''
+    set user photo url
+    
+    request {
+        uid: string
+        photoURL: string
+    }
+    '''
+    req = request.get_json()
+
+    uid = req.get('uid')
+    if not uid:
+        return create_response(False, message="uid required in POST body")
+    user_ref = db.collection(u'users').document(uid)
+
+    user_ref.update({
+        u'photoURL': req.get('photoURL')
+    })
+
+    user_doc = user_ref.get().to_dict()
+
+    return create_response(True, data=user_doc)
+
+
 @app.route('/TEST-recipe', methods=['GET'])
 def get_random_recipes(output=None):
     from random import choice
@@ -67,10 +119,10 @@ def login():
 
     # !temp add 5 random bookmarks for testing
     testing_bookmarks = []
-    if is_returning_user:
+    if not is_returning_user:
         try:
             recipes_resp = get_random_recipes(True)
-            hits = recipes_resp.get('hits')[:5]
+            hits = recipes_resp.get('hits')[:2]
             recipe_ids = [hit.get('recipe').get("uri") for hit in hits]
             testing_bookmarks = [
                 uri[uri.index("recipe_"):] for uri in recipe_ids]
@@ -82,8 +134,6 @@ def login():
         user_ref.update({
             u'photoURL': req.get('photoURL'),
             u'lastSignInTime': req.get('lastSignInTime'),
-            u'bookmarks': testing_bookmarks
-
         })
     else:  # new user document
         user_ref.set({
@@ -94,7 +144,7 @@ def login():
             u'creationTime': req.get('creationTime'),
             u'lastSignInTime': req.get('lastSignInTime'),
             u'recipes': [],
-            u'bookmarks': []
+            u'bookmarks': testing_bookmarks
         })
 
     # !temp
@@ -128,6 +178,8 @@ def get_recipe(id: str, output=None):
 
     try:
         recipe = resp.get("recipe")
+        if not recipe: 
+            raise Exception
     except Exception:
         return create_response(False, data=resp)
 
@@ -150,7 +202,10 @@ def get_recipes():
     for id in ids:
         resp = get_recipe(id, True)
         try:
-            recipes.append(resp.get("recipe"))
+            recipe = resp.get("recipe")
+            if not recipe:
+                continue
+            recipes.append(recipe)
         except Exception:
             continue
 
