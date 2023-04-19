@@ -1,9 +1,29 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { loggedInSelector } from "../../redux/auth/auth.selector";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import "./recipe.css";
+
+export const useRecipeCache = () => {
+    const sessionRecipes = sessionStorage.getItem("cache_recipes");
+    const [cache_recipes, set_cache_recipes] = useState(
+        !!sessionRecipes ? JSON.parse(sessionRecipes) : {}
+    );
+
+    const isRecipeCached = useCallback(
+        (id: string) => cache_recipes.hasOwnProperty(id),
+        [cache_recipes]
+    );
+    const cacheRecipe = (id: string, recipe: any) => {
+        const currentRecipes = sessionStorage.getItem("cache_recipes");
+        const newCache = !!currentRecipes ? JSON.parse(currentRecipes) : {};
+        newCache[id] = recipe;
+        sessionStorage.setItem("cache_recipes", JSON.stringify(newCache));
+    };
+
+    return { cache_recipes, isRecipeCached, cacheRecipe };
+};
 
 export const Recipe = () => {
     const loggedIn = useSelector(loggedInSelector);
@@ -12,12 +32,24 @@ export const Recipe = () => {
     const [recipe, setRecipe] = useState<any>();
     const [loading, setLoading] = useState<boolean>(true);
 
+    const { cache_recipes, isRecipeCached, cacheRecipe } = useRecipeCache();
+    var flag = false;
     useEffect(() => {
-        if (!loggedIn) {
+        if (!loggedIn || recipe) return;
+        if (!id) return navigate("/");
+
+        if (isRecipeCached(id)) {
+            // show recipe from cache
+            console.log("found recipe in cache: ", cache_recipes[id]);
+            setRecipe(cache_recipes[id]);
+            setLoading(false);
             return;
         }
 
         setLoading(true);
+        if (flag) return;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        flag = true;
         fetch(`/recipe/${id}`, {
             method: "GET",
         })
@@ -26,12 +58,23 @@ export const Recipe = () => {
                 console.log("/recipe: ", data);
                 if (data.success) {
                     setRecipe(data.data);
+                    cacheRecipe(id, data.data);
                 } else {
                     console.error("/recipe response error: ", data);
                 }
                 setLoading(false);
-            });
-    }, [loggedIn]);
+            })
+            .catch((err) => console.error(err));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        cacheRecipe,
+        cache_recipes,
+        id,
+        isRecipeCached,
+        loading,
+        loggedIn,
+        recipe,
+    ]);
 
     if (!id) navigate("/");
     return (
