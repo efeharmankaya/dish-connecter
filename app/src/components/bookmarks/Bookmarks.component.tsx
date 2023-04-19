@@ -93,13 +93,8 @@ export const Bookmarks = () => {
             {!loading && !!userBookmarks?.length && (
                 <div className="bookmarkList">
                     {userBookmarks.map((recipe: any, i) => (
-                        <RecipeRow key={i} {...recipe} />
+                        <RecipeRow key={i} recipe={recipe} />
                     ))}
-                </div>
-            )}
-            {!loading && !userBookmarks?.length && (
-                <div>
-                    <h4>Failed to load bookmarks.</h4>
                 </div>
             )}
         </div>

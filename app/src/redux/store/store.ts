@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import AuthReducer from '../auth/auth.reducer';
-import bookmarksReducer from '../bookmarks/bookmarks.reducer';
+import BookmarksReducer from '../bookmarks/bookmarks.reducer';
+import SearchReducer from '../search/search.reducer';
 
 const store = configureStore({
     reducer: {
         auth: AuthReducer,
-        bookmarks: bookmarksReducer
+        bookmarks: BookmarksReducer,
+        search: SearchReducer
     }
 })
 
