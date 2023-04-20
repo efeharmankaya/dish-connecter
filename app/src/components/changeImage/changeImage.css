@@ -1,0 +1,13 @@
+.change-photo-container{
+    margin-left: 100px;
+}
+
+form{border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+width:20%}
+
+.user-photo-container{width:200px;
+    max-width: 200%;
+    border-radius: 25%;
+    }
