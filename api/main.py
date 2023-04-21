@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from os.path import join, dirname
 from dotenv import load_dotenv
 import firebase_admin
@@ -13,19 +13,26 @@ cred = credentials.Certificate("serviceAccount.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="build",
+            static_url_path='/', template_folder='build')
 
 
 def create_response(success, message=None, data=None):
     return jsonify({'success': success, 'message': message, 'data': data})
 
 
-@app.route('/', methods=['GET'])
-def index():
+@app.route('/api', methods=['GET'])
+def api():
     '''
     test api connection
     '''
     return create_response(True, "Success from api")
+
+
+@app.errorhandler(404)
+def index(path):
+    print(f"404 errorhandler path: ", path)
+    return render_template('index.html')
 
 
 CUISINES = ['American', 'Asian', 'British', 'Caribbean', 'Central Europe', 'Chinese', 'Eastern Europe', 'French', 'Indian',
@@ -203,7 +210,6 @@ def get_recipe(id: str, output=None):
             return recipe
         return create_response(False, message="Invalid recipe id.")
 
-
     APP_ID = os.getenv("RECIPE_APP_ID")
     APP_KEY = os.getenv("RECIPE_APP_KEY")
     request_url = f'https://api.edamam.com/api/recipes/v2/{id}?type=public&app_id={APP_ID}&app_key={APP_KEY}'
@@ -216,7 +222,7 @@ def get_recipe(id: str, output=None):
 
     try:
         recipe = resp.get("recipe")
-        if not recipe: 
+        if not recipe:
             raise Exception
     except Exception:
         return create_response(False, data=resp)

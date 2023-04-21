@@ -1,6 +1,8 @@
 # Dish Connecter
 `Final group project part of User Interface Design (SOEN 357)`
 
+[Demo](https://dish-connecter-384415.uc.r.appspot.com)
+
 [INSERT DESCRIPTION]
 
 | Team Members |  Id |
@@ -39,5 +41,23 @@ Navigate to `/dish-connecter/app`
 Navigate to `/dish-connecter/api`
 ```
 > python3 api.py
+```
+
+## Deploy
+`Note: ensure your are in the correct branch dish-connecter/prod`
+As the proxy must be changed from development localhost to `"proxy": "https://dish-connecter-api.uc.r.appspot.com"`
+
+### Frontend
+
+Navigate to `/dish-connecter/app`
+```
+> gcloud app deploy --project=dish-connecter-384415
+```
+
+### Backend
+
+Navigate to `/dish-connecter/api`
+```
+> gcloud app deploy --project=dish-connecter-api
 ```
 
