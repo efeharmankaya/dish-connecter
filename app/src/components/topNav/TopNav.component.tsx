@@ -7,11 +7,17 @@ import {
 } from "firebase/auth";
 import { useAuth } from "../auth/auth.hooks";
 import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { userSelector } from "../../redux/auth/auth.selector";
 
 export const TopNav = () => {
     const auth = getAuth();
     const { handleSignOut } = useAuth();
 
+    const user = useSelector(userSelector);
+
+    const navigate = useNavigate();
     const loginWithOAuth = useCallback(
         (provider: AuthProvider) =>
             signInWithPopup(auth, provider)
@@ -22,17 +28,19 @@ export const TopNav = () => {
         [auth]
     );
 
+    const onSignOut = useCallback(() => {
+        handleSignOut();
+        navigate("/");
+    }, [handleSignOut, navigate]);
+
     return (
         <div className="top-nav-container">
             <a className="navbar-brand" href="/">
                 <h2 id="navbar_title">Dish Connecter</h2>
             </a>
 
-            {auth.currentUser ? (
-                <button
-                    className="oauth-button"
-                    onClick={() => handleSignOut()}
-                >
+            {user ? (
+                <button className="oauth-button" onClick={() => onSignOut()}>
                     Sign Out
                 </button>
             ) : (
