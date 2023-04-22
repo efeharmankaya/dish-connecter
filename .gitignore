@@ -1,8 +1,10 @@
 # dependencies
 */node_modules
-
 # production
 */build
+
+*/.env
+*/serviceAccount.json
 
 # misc
 .DS_Store
